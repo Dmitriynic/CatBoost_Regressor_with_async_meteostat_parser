@@ -26,6 +26,8 @@ df_train = result_df
 
 X = df_train.drop(columns=['score'])
 y = df_train['score']
+#features selected by result of model.select_features
+X = X[['0', '12', '18', '19', '34', '42', '78', '91', '102', '146', '178', '183', '208', '221', '281', '303', '326', '330', '336', 'prcp']]
 
 k_folds = 5
 random_state = 800
@@ -46,6 +48,16 @@ for train_index, val_index in kf.split(X):
     
     mae = mean_absolute_error(y_val, y_pred)
     mae_scores.append(mae)
+    # summary = model.select_features(X_train, y_train, 
+    #                                 eval_set=(X_val, y_val),
+    #                                 features_for_select=['0-362','cluster_1','cluster_2','cluster_3', 'cluster_4','tavg','tmin','tmax','prcp'],
+    #                                 num_features_to_select = 20,
+    #                                 steps=1,
+    #                                 train_final_model=False,
+    #                                 logging_level='Silent')
+
+    # print(summary['selected_features_names'])
+    # print(f"Best loss: {summary['loss_graph']['loss_values'][-1]}")
 
 mean_mae = np.mean(mae_scores)
 print(mae_scores)
